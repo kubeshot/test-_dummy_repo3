@@ -1,0 +1,61 @@
+name: Fork and Push Repository
+
+on:
+  push:
+    branches:
+      - main
+#   workflow_dispatch:
+#     inputs:
+#       source_repo_url:
+#         description: 'Public repository to fork from (format: owner/repo)'
+#         required: true
+#         type: string
+#       private_org:
+#         description: 'Private org to push'
+#         required: true
+#         type: string
+#       private_repo:
+#         description: "Name of private repo (Not mandatory, will name automatically if not provided)"
+#         required: false
+#         type: string
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+jobs:
+  fork-repos:
+    runs-on: ${{ vars.ACTIONS_RUNSON }}
+    defaults:
+        run:
+          working-directory: ${{ github.workspace }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install simple-git
+          npm install @octokit/rest
+          npm install jsonwebtoken
+
+
+      - name: Run Sync Script
+        env:
+          SOURCE_REPO_URL: ${{ github.event.inputs.source_repo_url }}
+          GITHUB_APP_ID: "1083999"
+          GITHUB_INSTALLATION_ID_INFRA: "58235263"
+          GITHUB_INSTALLATION_ID_SHARED: "58235263" 
+          GITHUB_APP_PRIVATE_KEY: "5e9731bb206bfbae0deb3768f7d1fbd56e4a2878"
+        #   GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        run: |
+            echo "Starting Sync Script..."
+            node action/sync_files.js

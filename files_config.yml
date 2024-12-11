@@ -1,0 +1,23 @@
+topics:
+  - name: "dummy"
+    source_repositories:
+      - name: "bns-infra/test-dummy-repo"
+        source_files:
+        - "test_dummy_file.txt"
+        - ".github/workflows/test_dummy_workflow.yml"
+  - name: "dummy_2"
+    source_repositories:
+      - name: "bns-shared/test_dummy_repo_shared"
+        source_files:
+        - "test_dummy_file_2.txt"
+        - ".github/workflows/test_dummy_workflow_2.yml"
+      - name: "bns-shared/test-dummy-repo"
+        source_files:
+        - "test_dummy_file.txt"
+        - ".github/workflows/test_dummy_workflow_2.yml"
+  - name: "frontend"
+    source_repositories:
+      - name: "kubeshot/sync_codeowners"
+        source_files:
+        - ".github/workflows/sync_codeowners.yml"
+

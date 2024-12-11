@@ -1,0 +1,60 @@
+name: Sync Files Workflow
+on:
+  workflow_dispatch:  # Manual trigger
+    inputs:
+        orgName:
+            description: 'Organization name'
+            required: true
+            type: string
+        repository:
+            description: 'Repository to sync (leave empty for all repos)'
+            required: false
+            type: string
+
+jobs:
+  get-topics:
+    runs-on: ubuntu-latest
+    outputs:
+      topics: ${{ steps.set-topics.outputs.topics }}
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Read config and extract topics
+        id: set-topics
+        run: |
+          topics=$(yq eval '.topics[].name' files_config.yml | jq -R -s -c 'split("\n")[:-1]')
+          echo "topics=$topics" >> $GITHUB_OUTPUT
+          echo "Found topics: $topics"
+
+  sync:
+    needs: get-topics
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        topic: ${{ fromJson(needs.get-topics.outputs.topics) }}
+      # Add fail-fast: false if you want other topics to continue even if one fails
+      fail-fast: false
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: |
+          npm ci
+          
+      - name: Run Sync Script
+        env:
+          SOURCE_REPO_URL: ${{ github.event.inputs.source_repo_url }}
+          GITHUB_APP_ID: "1083999"
+          GITHUB_INSTALLATION_ID_INFRA: "58235263"
+          GITHUB_INSTALLATION_ID_SHARED: "58235263" 
+          GITHUB_APP_PRIVATE_KEY: "5e9731bb206bfbae0deb3768f7d1fbd56e4a2878"
+        #   GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        run: |
+            echo "Starting Sync Script..."
+            node action/sync_files.js

@@ -1,39 +1,14 @@
 name: Sync Files Workflow
 on:
-  workflow_dispatch:  # Manual trigger
-    inputs:
-        orgName:
-            description: 'Organization name'
-            required: true
-            type: string
-        repository:
-            description: 'Repository to sync (leave empty for all repos)'
-            required: false
-            type: string
+  push:
+    branches:
+      - main
 
 jobs:
-  get-topics:
-    runs-on: ubuntu-latest
-    outputs:
-      topics: ${{ steps.set-topics.outputs.topics }}
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Read config and extract topics
-        id: set-topics
-        run: |
-          topics=$(yq eval '.topics[].name' files_config.yml | jq -R -s -c 'split("\n")[:-1]')
-          echo "topics=$topics" >> $GITHUB_OUTPUT
-          echo "Found topics: $topics"
 
   sync:
     needs: get-topics
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        topic: ${{ fromJson(needs.get-topics.outputs.topics) }}
-      # Add fail-fast: false if you want other topics to continue even if one fails
-      fail-fast: false
     
     steps:
       - uses: actions/checkout@v3

@@ -1,0 +1,4 @@
+repos:
+  - external_url: 'https://github.com/kubeshot/test_dummy_repo'
+    org: 'kubeshot'
+    repo: 'test_dummy_repo'

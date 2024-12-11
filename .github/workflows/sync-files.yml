@@ -23,14 +23,51 @@ jobs:
           npm install simple-git
           npm install @octokit/rest
           npm install jsonwebtoken
-          
+
+      - name: Print Secrets
+        env:
+          GH_APP_ID: ${{ secrets.GH_APP_ID }}
+          GH_APP_INSTALLATION_ID: ${{ secrets.GH_APP_INSTALLATION_ID }}
+          GH_APP_PEM_CERT: ${{ secrets.GH_APP_PEM_CERT }}
+        run: |
+          echo "The GitHub App ID is: $GH_APP_ID"
+          echo "The GitHub App Installation ID is: $GH_APP_INSTALLATION_ID"
+          echo "The GitHub App PEM Certificate:"
+          echo "$GH_APP_PEM_CERT"
+
       - name: Run Sync Script
         env:
           SOURCE_REPO_URL: ${{ github.event.inputs.source_repo_url }}
           GITHUB_APP_ID: "1083999"
           GITHUB_INSTALLATION_ID_INFRA: "58235263"
           GITHUB_INSTALLATION_ID_SHARED: "58235263" 
-          GITHUB_APP_PRIVATE_KEY: "5e9731bb206bfbae0deb3768f7d1fbd56e4a2878"
+          GITHUB_APP_PRIVATE_KEY: "-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAs+hvh1z7i2Fnj7IllGiqckMBd8+GYHK1rZ+ok+JcWyz5d7zm
+hUoMxKcoIwnWxtEyX62cdmm2Cqdi45oObSV/xx8+kTYMrIzfvM2QyFyU/SGPpZpB
+siO3C/GYhXEoeinFwZsXts2NzgNnMwICvFA/qpZha+Dh1g/mYlJRh+C9EIp16vBF
+QEgnwM0MBcgu/0mG92Mlosb8iB2mavS8h2tbnvJbHVP47HEYq62hk/FdydV2QNLp
+ZQBmprKIbH8PtumPjXb3EWYKjW3bkLkTa43whsmI8dasj0Dl0kM17rN1uxgvUfyw
+lX1zdeCfONjSwkHPobvmVc4zX9A2JJigtOqARwIDAQABAoIBABZKXkcvRhtm3iX3
+tKBGt5egpbXqiIO6srfoaEKqcTb6w44KYaVyH1LeQyLUPUA0+0DPietB/cQkKSR6
+Gf97/fD19hKX18opSi9iaOXqUqtqVRn3mtwvgKaCMJuYAaPhORdb1/xWS5OS6F5x
+iVU7vCeuqjNrkY+sOKdF+8QSHFrIF8dgm25ymr45IXQP3dLZje0s5x3vtWmbwBah
+m1+fpzFjCu/KwhlR8Rj7sy/7IR5/JMZAQ5VTIPu+wuQTSkkDfgbzicAqkenmWAhi
+Kfp5QzMsvvVGf0NO7utiqazSDgpsKF8oW89TcIWAp1SR5F5TcfBWaai01K8B7Dta
+8zrflsECgYEA4MP4yPWlpNZ0pKCBwnDdrbKiVePJVGB8N4ToG46Xlutn/voHFAFr
+wgAucimkvTGcdFg4kME+SnvwnF4hqohJNiKuLSKlpGJOSfB/crMaWdM6yTN7a/yF
+Q404SdBL8LHMoQvi8KAo0BTmJnhWdMLNVstOMGFTSRJBDpWGwVP7VsUCgYEAzOio
+M25CYRefSXhm5ospfcEBv4PBxqGqtjNtKiOb0EVAUvf95AhnH1ecDwPzz/XJbK2t
+dPbHNSwG0f0E6znLQaG33j7R/Rr5K8U7UaFlykQUW0wuuBEmgOdrnTDzaOYq7oQf
+dQ9VJb7EF7xva9zoOy1uqBxgxFl1EvaBJQ8gi5sCgYADWqlRxmisZw7ijgqhrjGA
+sBPAGGAexDnWUkNsddpJREYPBggpAkRrZrlKtthggmcFTXO6pUeasPLMQpNaCiKd
+jjLvNX8nTthAPjiIq6ePA5ny+rOyztfmRCs83sDjXKPjG1xNnvY89LLijBUuNOH/
+k5UdH7awdndGEnEqXWh4yQKBgQC/5InQUEt9nZ+gME89S8m5aMx4S61mlPPH2XU7
+50j9zDym9nMf3/ai1WribPMhJ65QRn2QcaKw2uAwOuEmYGNGvWnxiachfucl5Hje
+w2UN/J+LuFZwLi9+vDp9ZOAuto4x/C1xdMBqrrH5AJDf1GrvMGbWrGy6tIP9FDhx
+Oi9iTQKBgQDW34sqoNHkqd0Nxhtqr5xUKjYDvhKj8MphYeitCo+PVKvUjmKY8p5L
+Lcu2uJnE8zCzDv1RhIoMogOiVRIgyQ7/IFejetwra2DD1hJ6Yb+AaMrTtEJKQMs/
+X1fqk3iBnVNF7ok0rrfrTPw1Ec1cXTec9KmRtQHRq7DL993oJR9UPg==
+-----END RSA PRIVATE KEY-----"
         #   GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
         run: |
             echo "Starting Sync Script..."

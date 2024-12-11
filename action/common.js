@@ -18,14 +18,7 @@ export const git = simpleGit();
 
 export const myFetch = (url, opts) => {
     console.log("Trying custom fetch..")
-    return undiciFetch(url, {
-        ...opts,
-        dispatcher: new ProxyAgent({
-            //uri: process.env.HTTPS_PROXY,
-            keepAliveTimeout: 10,
-            keepAliveMaxTimeout: 10,
-        }),
-    });
+    return undiciFetch(url, opts);
 };
 
 export function getInstallationId(orgName) {

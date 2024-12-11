@@ -26,7 +26,7 @@ permissions:
 
 jobs:
   fork-repos:
-    runs-on: ${{ vars.ACTIONS_RUNSON }}
+    runs-on: ubuntu-latest
     defaults:
         run:
           working-directory: ${{ github.workspace }}

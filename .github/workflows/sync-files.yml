@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
+          npm install simple-git
+          npm install @octokit/rest
+          npm install jsonwebtoken
           
       - name: Run Sync Script
         env:

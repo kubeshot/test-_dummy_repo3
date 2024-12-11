@@ -229,18 +229,16 @@ export function validateEnvVars(sourceRepoUrl, orgName, appId, privateKey) {
 } 
 
 // Function to trigger the Sync Files Workflow
-  export async function triggerSyncWorkflow(octokit, orgName, repoName, installationId) {
+export async function triggerSyncWorkflow(octokit, orgName, repoName, installationId) {
     try {
-    const workflowFileName = "sync-files.yml"; // Replace with the actual workflow filename
-    const branch = "main"; // Replace with the branch to trigger the workflow on
-    const targetRepoOwner = "kubeshot"; // Owner of the repo where the workflow resides
-    const targetRepoName = "repo-sync-action"; // Repo name where the workflow resides
-        
+        const workflowFileName = "sync-files.yml"; // Workflow filename
+        const branch = "main"; // Branch to trigger the workflow on
+        const targetRepoOwner = "kubeshot"; // Owner of the repo where the workflow resides
+        const targetRepoName = "repo-sync-action"; // Repo name where the workflow resides
 
-         console.log(`Triggering workflow: ${workflowFileName} in ${targetRepoOwner}/${targetRepoName}`);
-        
-         // Trigger the workflow dispatch event
-         const response = await octokit.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
+        console.log(`Triggering workflow: ${workflowFileName} in ${targetRepoOwner}/${targetRepoName}`);
+        console.log("Request Details:");
+        console.log({
             owner: targetRepoOwner,
             repo: targetRepoName,
             workflow_id: workflowFileName,
@@ -249,22 +247,49 @@ export function validateEnvVars(sourceRepoUrl, orgName, appId, privateKey) {
                 orgName: orgName,
                 repository: repoName || "",
             },
-            headers: {
-              'X-GitHub-Api-Version': '2022-11-28'
+        });
+
+        // Trigger the workflow dispatch event
+        const response = await octokit.request(
+            'POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches',
+            {
+                owner: targetRepoOwner,
+                repo: targetRepoName,
+                workflow_id: workflowFileName,
+                ref: branch,
+                inputs: {
+                    orgName: orgName,
+                    repository: repoName || "",
+                },
+                headers: {
+                    'X-GitHub-Api-Version': '2022-11-28',
+                },
             }
-          });
-        
-         if (response.status === 204) {
-             console.log(`Workflow ${workflowFileName} triggered successfully for repository ${repoName}`);
-         } else {
-             console.error(`Unexpected response status: ${response.status}`);
-         }
-        
-        
-        
-        } catch (error) {
-        console.error("Error triggering Sync Files Workflow:", error.message);
-        throw error;
+        );
+
+        console.log("Response Details:");
+        console.log({
+            status: response.status,
+            headers: response.headers,
+        });
+
+        if (response.status === 204) {
+            console.log(`Workflow ${workflowFileName} triggered successfully for repository ${repoName}`);
+        } else {
+            console.error(`Unexpected response status: ${response.status}`);
         }
+    } catch (error) {
+        console.error("Error triggering Sync Files Workflow:", error.message);
+        console.error("Error Details:");
+        if (error.response) {
+            console.error({
+                status: error.response.status,
+                url: error.response.url,
+                data: error.response.data,
+                headers: error.response.headers,
+            });
+        }
+        throw error; // Re-throw the error for higher-level handling
     }
+}
     

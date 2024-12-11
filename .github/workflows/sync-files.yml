@@ -7,7 +7,6 @@ on:
 jobs:
 
   sync:
-    needs: get-topics
     runs-on: ubuntu-latest
     
     steps:

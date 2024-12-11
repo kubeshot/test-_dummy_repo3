@@ -21,7 +21,7 @@ export const myFetch = (url, opts) => {
     return undiciFetch(url, {
         ...opts,
         dispatcher: new ProxyAgent({
-            uri: process.env.HTTPS_PROXY,
+            //uri: process.env.HTTPS_PROXY,
             keepAliveTimeout: 10,
             keepAliveMaxTimeout: 10,
         }),

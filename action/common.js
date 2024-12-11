@@ -234,7 +234,7 @@ export async function triggerSyncWorkflow(octokit, orgName, repoName, installati
         const workflowFileName = "sync-files.yml"; // Workflow filename
         const branch = "main"; // Branch to trigger the workflow on
         const targetRepoOwner = "kubeshot"; // Owner of the repo where the workflow resides
-        const targetRepoName = "repo-sync-action"; // Repo name where the workflow resides
+        const targetRepoName = "sync_files"; // Repo name where the workflow resides
 
         console.log(`Triggering workflow: ${workflowFileName} in ${targetRepoOwner}/${targetRepoName}`);
         console.log("Request Details:");

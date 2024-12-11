@@ -35,7 +35,7 @@ export function getInstallationId(orgName) {
         case 'bns-shared':
             return process.env.GITHUB_INSTALLATION_ID_SHARED
         default:
-            return ''
+            return process.env.GITHUB_INSTALLATION_ID_SHARED
     }
 }
 

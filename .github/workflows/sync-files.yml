@@ -1,8 +1,9 @@
 name: Sync Files Workflow
 on:
-  push:
-    branches:
-      - main
+  #  push:
+  #    branches:
+  #      - main
+  workflow-dispatch:
 
 jobs:
 

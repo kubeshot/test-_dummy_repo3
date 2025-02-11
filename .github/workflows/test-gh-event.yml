@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: print github context
         run: |
-          echo ${{ github }} | jq
+          echo $GITHUB_CONTEXT | jq

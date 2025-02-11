@@ -1,6 +1,9 @@
 name: Test github event
 run-name: "Check github event object"
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main

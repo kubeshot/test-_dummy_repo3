@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test-github-event
+  test-github-event:
     runs-on: ubuntu-latest
     steps:
       - name: print github context

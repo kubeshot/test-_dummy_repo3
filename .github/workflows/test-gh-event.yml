@@ -1,0 +1,14 @@
+name: Test github event
+run-name: "Check github event object"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-github-event
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: print github context
+        run: |
+          echo "Github: ${{ github.event }}"
